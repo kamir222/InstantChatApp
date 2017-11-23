@@ -1,9 +1,11 @@
-  "name": "lighthouselabs",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Katia <katia.amir@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.16.2",
-    "socket.io": "^2.0.4"
-  },
+{
+   "name": "lighthouselabs",
+   "version": "1.0.0",
+   "main": "index.js",
+   "author": "Katia <katia.amir@gmail.com>",
+   "license": "MIT",
+   "dependencies": {
+      "express": "^4.16.2",
+      "socket.io": "^2.0.4"
+   }
+}
