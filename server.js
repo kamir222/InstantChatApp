@@ -29,11 +29,42 @@ io.on('connection', function (socket) {
   	var listItem = '<li>' + result + '</li>'
     history.push(listItem)
     io.emit('messageDetails', listItem);
-    if (message.match(/\?$/) !== null  && 
-    message.match(/^.*?\bwhat\b.*?\bname\b.*?$/m) !== null) {
+
+    var formattedMessage = message.toLowerCase()
+    if (formattedMessage.match(/^.*?\bwhat\b.*?\bname\b.*?$/m) !== null) {
       var botResult = 
       '<div id="message-block">' +
-      '<span><p> Paula said: My name is Paula</p></span>' + 
+      '<span><p>My name is Paula</p></span>' + 
+      '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
+      '</div>' 
+      var listItemBot = '<li>' + botResult + '</li>'
+      history.push(listItemBot)
+      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
+    } else if (formattedMessage.match(/^.*?\how\b.*?\old\b.*?$/m) !== null || 
+              formattedMessage.match(/^.*?\what\b.*?\age\b.*?$/m) !== null) {
+      var botResult = 
+      '<div id="message-block">' +
+      '<span><p>I am timeless, baby</p></span>' + 
+      '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
+      '</div>' 
+      var listItemBot = '<li>' + botResult + '</li>'
+      history.push(listItemBot)
+      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
+    }
+    else if (formattedMessage.match(/^.*?\what\b.*?\do\b.*?$/m) !== null || 
+             formattedMessage.match(/^.*?\what\b.*?\like\b.*?$/m) !== null) {
+      var botResult = 
+      '<div id="message-block">' +
+      '<span><p>I am a food wizard, not bragging or anything but im pretty great.</p></span>' + 
+      '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
+      '</div>' 
+      var listItemBot = '<li>' + botResult + '</li>'
+      history.push(listItemBot)
+      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
+    } else {
+      var botResult = 
+      '<div id="message-block">' +
+      '<span><p>I can only answer these questions:<br/>what is your name?<br/>how old are you?<br/>what do you do?</p></span>' + 
       '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
       '</div>' 
       var listItemBot = '<li>' + botResult + '</li>'
