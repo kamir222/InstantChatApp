@@ -28,7 +28,7 @@ io.on('connection', function (socket) {
   io.emit('chatHistoy', history);
   setInterval(function(){ 
     io.emit('messageDetails', listItemBot); 
-  }, 10000); //send a scarring message every 10 seconds
+  }, 20000); //send a scarring message every 20 seconds
   socket.on('messageDetails', function (msg) {
   	var message = msg.text
     var user = msg.name
@@ -41,7 +41,10 @@ io.on('connection', function (socket) {
   	var listItem = '<li>' + result + '</li>'
     history.push(listItem)
     io.emit('messageDetails', listItem);
+
     var formattedMessage = message.toLowerCase()
+
+
     if (formattedMessage.match(/^.*?\bwhat\b.*?\bname\b.*?$/m) !== null) {
       var botResult = 
       '<div id="message-block">' +
@@ -49,8 +52,6 @@ io.on('connection', function (socket) {
       '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
       '</div>' 
       var listItemBot = '<li>' + botResult + '</li>'
-      history.push(listItemBot)
-      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
     } else if (formattedMessage.match(/^.*?\what\b.*?\like\b.*?$/m) !== null) {
       var botResult = 
       '<div id="message-block">' +
@@ -58,8 +59,6 @@ io.on('connection', function (socket) {
       '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
       '</div>' 
       var listItemBot = '<li>' + botResult + '</li>'
-      history.push(listItemBot)
-      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
     } else if (formattedMessage.match(/^.*?\how\b.*?\old\b.*?$/m) !== null || 
               formattedMessage.match(/^.*?\what\b.*?\age\b.*?$/m) !== null) {
       var botResult = 
@@ -68,18 +67,16 @@ io.on('connection', function (socket) {
       '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
       '</div>' 
       var listItemBot = '<li>' + botResult + '</li>'
-      history.push(listItemBot)
-      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
     } else {
       var botResult = 
       '<div id="message-block">' +
       '<span><p>Hello. I am Paula. I can only answer these questions:<br/>what is your name?<br/>how old are you?<br/>what do you like?</p></span>' + 
       '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
       '</div>' 
-      var listItemBot = '<li>' + botResult + '</li>'
-      history.push(listItemBot)
-      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
+      var listItemBot = '<li>' + botResult + '</li>'     
     }
+    history.push(listItemBot)
+    setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
   });
 });
 
