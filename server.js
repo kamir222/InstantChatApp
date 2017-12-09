@@ -13,12 +13,7 @@ var clientCount = 0
 io.on('connection', function (socket) {
   io.emit('chatHistoy', history);
   
-
-  // if (clientCount !== io.engine.clientsCount) {
-  // 	clientCount = io.engine.clientsCount
-  // }
   socket.on('messageDetails', function (msg) {
-  	console.log(clientCount);
   	var message = msg.text
   	var user = msg.name
   	var result = user + " said: " + message
@@ -26,11 +21,6 @@ io.on('connection', function (socket) {
   	history.push(listItem)
     io.emit('messageDetails', listItem);
   });
- //  socket.on('disconnect', function (socket) {
-	// if (clientCount !== io.engine.clientsCount) {
- //  	  clientCount = io.engine.clientsCount
- //    }
- //  });
 });
 
 
