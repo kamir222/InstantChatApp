@@ -46,5 +46,5 @@ io.on('connection', function (socket) {
 
 
 server.listen(8080, function() {
-  console.log('Chat server running');
+  console.log('Chat server running at 8080');
 });
