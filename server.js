@@ -38,7 +38,7 @@ io.on('connection', function (socket) {
       '</div>' 
       var listItemBot = '<li>' + botResult + '</li>'
       history.push(listItemBot)
-      io.emit('messageDetails', listItemBot)
+      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
     }
   });
 });
