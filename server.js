@@ -16,25 +16,45 @@ var conversationSet = {
   'd': 'I am a sexy woman', //default
 }
 
+var botResult = 
+'<div id="message-block">' +
+'<span><p>Hello. I am Paula. By the way, I\'m really sexy</p></span>' + 
+'<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
+'</div>' 
+var listItemBot = '<li>' + botResult + '</li>'
+history.push(listItemBot)
+
 io.on('connection', function (socket) {
   io.emit('chatHistoy', history);
+  setInterval(function(){ 
+    io.emit('messageDetails', listItemBot); 
+  }, 10000); //send a scarring message every 10 seconds
   socket.on('messageDetails', function (msg) {
   	var message = msg.text
     var user = msg.name
     var result =
     '<div id="message-block">' +
-    '<span><p>' + user + " said: " + message + '</p></span>' + 
+    // '<span><p>' + user + " said: " + message + '</p></span>' + 
+    '<span><p>' + user + message + '</p></span>' + 
     '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
     '</div>'
   	var listItem = '<li>' + result + '</li>'
     history.push(listItem)
     io.emit('messageDetails', listItem);
-
     var formattedMessage = message.toLowerCase()
     if (formattedMessage.match(/^.*?\bwhat\b.*?\bname\b.*?$/m) !== null) {
       var botResult = 
       '<div id="message-block">' +
       '<span><p>My name is Paula</p></span>' + 
+      '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
+      '</div>' 
+      var listItemBot = '<li>' + botResult + '</li>'
+      history.push(listItemBot)
+      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
+    } else if (formattedMessage.match(/^.*?\what\b.*?\like\b.*?$/m) !== null) {
+      var botResult = 
+      '<div id="message-block">' +
+      '<span><p>I am a food wizard, not bragging or anything but im pretty great.</p></span>' + 
       '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
       '</div>' 
       var listItemBot = '<li>' + botResult + '</li>'
@@ -50,21 +70,10 @@ io.on('connection', function (socket) {
       var listItemBot = '<li>' + botResult + '</li>'
       history.push(listItemBot)
       setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
-    }
-    else if (formattedMessage.match(/^.*?\what\b.*?\do\b.*?$/m) !== null || 
-             formattedMessage.match(/^.*?\what\b.*?\like\b.*?$/m) !== null) {
-      var botResult = 
-      '<div id="message-block">' +
-      '<span><p>I am a food wizard, not bragging or anything but im pretty great.</p></span>' + 
-      '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
-      '</div>' 
-      var listItemBot = '<li>' + botResult + '</li>'
-      history.push(listItemBot)
-      setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
     } else {
       var botResult = 
       '<div id="message-block">' +
-      '<span><p>I can only answer these questions:<br/>what is your name?<br/>how old are you?<br/>what do you do?</p></span>' + 
+      '<span><p>Hello. I am Paula. I can only answer these questions:<br/>what is your name?<br/>how old are you?<br/>what do you like?</p></span>' + 
       '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
       '</div>' 
       var listItemBot = '<li>' + botResult + '</li>'

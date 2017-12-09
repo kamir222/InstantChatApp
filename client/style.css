@@ -79,13 +79,14 @@ input {
 }
 
 #initials {
+  display: none;
   width: 20%;
   border-bottom: 1px solid #FF8C00;
   margin-right: 4px;
 }
 
 #message {
-  width: 80%;
+  width: 100%;
   border-bottom: 1px solid #FF8C00;
 }
 
