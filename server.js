@@ -16,7 +16,7 @@ io.on('connection', function (socket) {
   socket.on('messageDetails', function (msg) {
   	var message = msg.text
   	var user = msg.name
-  	var result = user + " said: " + message
+  	var result = user + " said: " + message + new Date().toLocaleTimeString()
   	var listItem = '<li>' + result + '</li>'
   	history.push(listItem)
     io.emit('messageDetails', listItem);
