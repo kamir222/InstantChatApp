@@ -57,6 +57,11 @@ input {
   padding: 5px;
 }
 
+#message-block { 
+  display: flex;
+  justify-content: space-between;
+}
+
 #initials {
   width: 40px;
 }
@@ -64,3 +69,4 @@ input {
 #message {
   width: 315px;
 }
+
