@@ -7,13 +7,24 @@ body {
   margin: 20px;
 }
 
+p {
+  margin: 0;
+}
+
 main {
-  background-color: #f0f0f0;
-  border-radius: 6px;
   box-shadow: 3px 3px 12px #c8c8c8;
   margin: 20px auto;
   max-width: 450px;
-  padding: 20px;
+}
+
+header {
+  text-align: center;
+  background: #FF8C00;
+}
+
+header p {
+    padding: 18px;
+    color: #fff;
 }
 
 ol {
@@ -21,6 +32,7 @@ ol {
   margin-bottom: 20px;
   margin-top: 0;
   padding: 0;
+  padding: 20px;
 }
 
 li {
@@ -33,21 +45,20 @@ li:nth-child(odd) {
 }
 
 form {
-  background-color: lightsteelblue;
-  border-radius: 6px;
   margin: 0;
   padding: 10px;
 }
 
 button {
-  background-color: cornflowerblue;
-  border: none;
+  background-color: #FF8C00;
+  border: 1px solid #FF8C00;
   border-radius: 3px;
-  color: white;
-  font-size: 15px;
+  color: darkslategrey;
+  font-size: 13px;
   font-weight: bold;
   padding: 5px 10px;
   text-transform: uppercase;
+  margin-top: 10px;
 }
 
 input {
@@ -62,11 +73,19 @@ input {
   justify-content: space-between;
 }
 
+#inputs-container {
+  display: flex;
+  justify-content: center;
+}
+
 #initials {
-  width: 40px;
+  width: 20%;
+  border-bottom: 1px solid #FF8C00;
+  margin-right: 4px;
 }
 
 #message {
-  width: 315px;
+  width: 80%;
+  border-bottom: 1px solid #FF8C00;
 }
 
