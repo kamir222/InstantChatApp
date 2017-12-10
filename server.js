@@ -9,24 +9,42 @@ app.use(express.static('client'));
 var io = require('socket.io')(server);
 var history = [];
 var clientCount = 0
-var botPaulaConversationSet = {
-  'a': 'My name is Paula', //what's your name? 
-  'b': 'I am timeless, baby', //how old are you?
-  'c': 'I am a food wizard, not bragging or anything but im pretty great.', //what do you do? / what do you like?
-  'd': 'Hello. I am Paula. I can only answer these questions:<br/>what is your name?<br/>how old are you?<br/>what do you like?', //default
-}
 
-var botPaulaMsg = 
-'<div id="message-block">' +
-'<span><p>Hello. I am Paula. By the way, I\'m really sexy</p></span>' + 
-'<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
-'</div>' 
-var listItemBotPaula = '<li>' + botPaulaMsg + '</li>'
-function sendIntervalBotPaulaMsg() { 
-  history.push(listItemBotPaula)
-  io.emit('messageDetails', listItemBotPaula); 
-}
-setInterval(sendIntervalBotPaulaMsg, 20000); //send a scarring message every 20 seconds
+var botWeatherConversationSet = { "consolidated_weather": 
+[ { "id": 5093320921448448,
+"weather_state_name": "Heavy Rain",
+"weather_state_abbr": "hr",
+"wind_direction_compass": "S",
+"created": "2017-08-11T20:34:23.801200Z",
+"applicable_date": "2017-08-11",
+"min_temp": 19.16,
+"max_temp": 23.448333333333334,
+"the_temp": 22.886666666666667,
+"wind_speed": 6.816575418346193,
+"wind_direction": 179.21851889023347,
+"air_pressure": 1012.51,
+"humidity": 84,
+"visibility": 11.815062534796787,
+"predictability": 77 } ],
+"time": "2017-08-11T19:10:55.555640-04:00",
+"sun_rise": "2017-08-11T06:17:56.668717-04:00",
+"sun_set": "2017-08-11T20:28:07.284434-04:00",
+"timezone_name": "LMT",
+"parent": 
+{ "title": "Canada",
+"location_type": "Country",
+"woeid": 23424775,
+"latt_long": "56.954681,-98.308968" },
+"sources": 
+[ { "title": "BBC",
+"slug": "bbc",
+"url": "http://www.bbc.co.uk/weather/",
+"crawl_rate": 180 } ],
+"title": "Toronto",
+"location_type": "City",
+"woeid": 4118,
+"latt_long": "43.648560,-79.385368",
+"timezone": "America/Toronto" }
 
 io.on('connection', function (socket) {
   io.emit('chatHistoy', history);
@@ -38,35 +56,30 @@ io.on('connection', function (socket) {
     var result =
     '<div id="message-block">' + '<span><p>' + user + message +
     '</p></span>' + msgTimeStamp + '</div>'
-    // '<span><p>' + user + " said: " + message + '</p></span>' + 
-  	var listItem = '<li>' + result + '</li>'
+    var listItem = '<li>' + result + '</li>'
+    
     history.push(listItem)
     io.emit('messageDetails', listItem);
 
     switch (true) {
-      case (formattedMessage.match(/^.*?\bwhat\b.*?\bname\b.*?$/m) !== null):
-        var botPaulaMsg = 
-        '<div id="message-block">' + '<span><p>' + botPaulaConversationSet.a + 
-        '</p></span>' + msgTimeStamp + '</div>' 
-        break
-      case (formattedMessage.match(/^.*?\what\b.*?\like\b.*?$/m) !== null):
-        var botPaulaMsg = 
-        '<div id="message-block">' + '<span><p>' + botPaulaConversationSet.c  + 
-        '</p></span>' + msgTimeStamp + '</div>' 
-        break
-      case (formattedMessage.match(/^.*?\how\b.*?\old\b.*?$/m) !== null): 
-        var botPaulaMsg = 
-        '<div id="message-block">' + '<span><p>' + botPaulaConversationSet.b + 
+      case (formattedMessage.match(/^.*?\what\b.*?\weather\b.*?$/m) !== null): 
+        var botWeatherMsg = 
+        '<div id="message-block">' + '<span><p> The tempreture in the city of ' + 
+        botWeatherConversationSet["title"] + ' is ' + 
+        Math.round(botWeatherConversationSet["consolidated_weather"][0]["the_temp"]) +
+        ' degrees celcius with a state of ' + 
+        botWeatherConversationSet["consolidated_weather"][0]["weather_state_name"] + 
         '</p></span>' + msgTimeStamp + '</div>' 
         break
       default: 
-        var botPaulaMsg = 
-        '<div id="message-block">' + '<span><p>' + botPaulaConversationSet.d + 
-        '</p></span>' + msgTimeStamp + '</div>'
+      var botWeatherMsg = 
+      '<div id="message-block">' + '<span><p>Please ask me about the weather</p></span>' + msgTimeStamp + '</div>' 
     }
-    var listItemBotPaula = '<li>' + botPaulaMsg + '</li>'
-    history.push(listItemBotPaula)
-    setTimeout(function(){ io.emit('messageDetails', listItemBotPaula); }, 1000);
+
+    var listItemBotWeather = '<li>' + botWeatherMsg + '</li>'
+    history.push(listItemBotWeather)
+    setTimeout(function(){ io.emit('messageDetails', listItemBotWeather); }, 1000);
+
   });
 });
 
