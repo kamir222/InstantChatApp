@@ -9,24 +9,24 @@ app.use(express.static('client'));
 var io = require('socket.io')(server);
 var history = [];
 var clientCount = 0
-var conversationSet = {
+var botPaulaConversationSet = {
   'a': 'My name is Paula', //what's your name? 
   'b': 'I am timeless, baby', //how old are you?
   'c': 'I am a food wizard, not bragging or anything but im pretty great.', //what do you do? / what do you like?
   'd': 'Hello. I am Paula. I can only answer these questions:<br/>what is your name?<br/>how old are you?<br/>what do you like?', //default
 }
-var botResult = 
+
+var botPaulaMsg = 
 '<div id="message-block">' +
 '<span><p>Hello. I am Paula. By the way, I\'m really sexy</p></span>' + 
 '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
 '</div>' 
-var listItemBot = '<li>' + botResult + '</li>'
-function sendIntervalBotMsg() { 
-  history.push(listItemBot)
-  io.emit('messageDetails', listItemBot); 
+var listItemBotPaula = '<li>' + botPaulaMsg + '</li>'
+function sendIntervalBotPaulaMsg() { 
+  history.push(listItemBotPaula)
+  io.emit('messageDetails', listItemBotPaula); 
 }
-
-setInterval(sendIntervalBotMsg, 20000); //send a scarring message every 20 seconds
+setInterval(sendIntervalBotPaulaMsg, 20000); //send a scarring message every 20 seconds
 
 io.on('connection', function (socket) {
   io.emit('chatHistoy', history);
@@ -45,28 +45,28 @@ io.on('connection', function (socket) {
 
     switch (true) {
       case (formattedMessage.match(/^.*?\bwhat\b.*?\bname\b.*?$/m) !== null):
-        var botResult = 
-        '<div id="message-block">' + '<span><p>' + conversationSet.a + 
+        var botPaulaMsg = 
+        '<div id="message-block">' + '<span><p>' + botPaulaConversationSet.a + 
         '</p></span>' + msgTimeStamp + '</div>' 
         break
       case (formattedMessage.match(/^.*?\what\b.*?\like\b.*?$/m) !== null):
-        var botResult = 
-        '<div id="message-block">' + '<span><p>' + conversationSet.c  + 
+        var botPaulaMsg = 
+        '<div id="message-block">' + '<span><p>' + botPaulaConversationSet.c  + 
         '</p></span>' + msgTimeStamp + '</div>' 
         break
       case (formattedMessage.match(/^.*?\how\b.*?\old\b.*?$/m) !== null): 
-        var botResult = 
-        '<div id="message-block">' + '<span><p>' + conversationSet.b + 
+        var botPaulaMsg = 
+        '<div id="message-block">' + '<span><p>' + botPaulaConversationSet.b + 
         '</p></span>' + msgTimeStamp + '</div>' 
         break
       default: 
-        var botResult = 
-        '<div id="message-block">' + '<span><p>' + conversationSet.d + 
+        var botPaulaMsg = 
+        '<div id="message-block">' + '<span><p>' + botPaulaConversationSet.d + 
         '</p></span>' + msgTimeStamp + '</div>'
     }
-    var listItemBot = '<li>' + botResult + '</li>'
-    history.push(listItemBot)
-    setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
+    var listItemBotPaula = '<li>' + botPaulaMsg + '</li>'
+    history.push(listItemBotPaula)
+    setTimeout(function(){ io.emit('messageDetails', listItemBotPaula); }, 1000);
   });
 });
 
