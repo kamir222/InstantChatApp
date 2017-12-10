@@ -15,7 +15,6 @@ var conversationSet = {
   'c': 'I am a food wizard, not bragging or anything but im pretty great.', //what do you do? / what do you like?
   'd': 'Hello. I am Paula. I can only answer these questions:<br/>what is your name?<br/>how old are you?<br/>what do you like?', //default
 }
-
 var botResult = 
 '<div id="message-block">' +
 '<span><p>Hello. I am Paula. By the way, I\'m really sexy</p></span>' + 
@@ -42,27 +41,29 @@ io.on('connection', function (socket) {
   	var listItem = '<li>' + result + '</li>'
     history.push(listItem)
     io.emit('messageDetails', listItem);
-    if (formattedMessage.match(/^.*?\bwhat\b.*?\bname\b.*?$/m) !== null) {
-      var botResult = 
-      '<div id="message-block">' + '<span><p>' + conversationSet.a + 
-      '</p></span>' + msgTimeStamp + '</div>' 
-      var listItemBot = '<li>' + botResult + '</li>'
-    } else if (formattedMessage.match(/^.*?\what\b.*?\like\b.*?$/m) !== null) {
-      var botResult = 
-      '<div id="message-block">' + '<span><p>' + conversationSet.c  + 
-      '</p></span>' + msgTimeStamp + '</div>' 
-      var listItemBot = '<li>' + botResult + '</li>'
-    } else if (formattedMessage.match(/^.*?\how\b.*?\old\b.*?$/m) !== null) {
-      var botResult = 
-      '<div id="message-block">' + '<span><p>' + conversationSet.b + 
-      '</p></span>' + msgTimeStamp + '</div>' 
-      var listItemBot = '<li>' + botResult + '</li>'
-    } else {
-      var botResult = 
-      '<div id="message-block">' + '<span><p>' + conversationSet.d + 
-      '</p></span>' + msgTimeStamp + '</div>' 
-      var listItemBot = '<li>' + botResult + '</li>'     
+
+    switch (true) {
+      case (formattedMessage.match(/^.*?\bwhat\b.*?\bname\b.*?$/m) !== null):
+        var botResult = 
+        '<div id="message-block">' + '<span><p>' + conversationSet.a + 
+        '</p></span>' + msgTimeStamp + '</div>' 
+        break
+      case (formattedMessage.match(/^.*?\what\b.*?\like\b.*?$/m) !== null):
+        var botResult = 
+        '<div id="message-block">' + '<span><p>' + conversationSet.c  + 
+        '</p></span>' + msgTimeStamp + '</div>' 
+        break
+      case (formattedMessage.match(/^.*?\how\b.*?\old\b.*?$/m) !== null): 
+        var botResult = 
+        '<div id="message-block">' + '<span><p>' + conversationSet.b + 
+        '</p></span>' + msgTimeStamp + '</div>' 
+        break
+      default: 
+        var botResult = 
+        '<div id="message-block">' + '<span><p>' + conversationSet.d + 
+        '</p></span>' + msgTimeStamp + '</div>'
     }
+    var listItemBot = '<li>' + botResult + '</li>'
     history.push(listItemBot)
     setTimeout(function(){ io.emit('messageDetails', listItemBot); }, 1000);
   });
