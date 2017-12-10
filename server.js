@@ -21,14 +21,15 @@ var botResult =
 '<span><p>' + new Date().toLocaleTimeString() + '</p></span>' +
 '</div>' 
 var listItemBot = '<li>' + botResult + '</li>'
-history.push(listItemBot)
+function sendIntervalBotMsg() { 
+  history.push(listItemBot)
+  io.emit('messageDetails', listItemBot); 
+}
+
+setInterval(sendIntervalBotMsg, 20000); //send a scarring message every 20 seconds
 
 io.on('connection', function (socket) {
   io.emit('chatHistoy', history);
-  setInterval(function(){ 
-    io.emit('messageDetails', listItemBot); 
-  }, 20000); //send a scarring message every 20 seconds
-
   socket.on('messageDetails', function (msg) {
   	var message = msg.text
     var user = msg.name
