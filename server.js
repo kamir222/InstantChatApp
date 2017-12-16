@@ -55,6 +55,15 @@ io.on('connection', function (socket) {
         weatherApi[0]["consolidated_weather"][0]["weather_state_name"] + 
         '</p></span>' + msgTimeStamp + '</div>' 
         break
+      case (formattedMessage.match(/\btomorrow\b/) !== null): 
+        var botWeatherMsg = 
+        '<div id="message-block">' + '<span><p> The tempreture in the city of ' + 
+        weatherApi[0]['title'] + ' is ' + 
+        Math.round(weatherApi[0]["consolidated_weather"][1]["the_temp"]) +
+        ' degrees celcius with a state of ' + 
+        weatherApi[0]["consolidated_weather"][1]["weather_state_name"] + 
+        '</p></span>' + msgTimeStamp + '</div>' 
+        break
       default: 
       var botWeatherMsg = 
       '<div id="message-block">' + 
