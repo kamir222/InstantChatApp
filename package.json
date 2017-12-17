@@ -5,7 +5,7 @@
    "author": "Katia <katia.amir@gmail.com>",
    "license": "MIT",
    "scripts": {
-    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write 'client/**/*.js'"
+    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write './**/*.js'"
    },
    "dependencies": {
       "express": "^4.16.2",
