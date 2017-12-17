@@ -33,11 +33,16 @@ const daysOfTheWeek = [
   'saturday',
 ]
 
+const humanizeApi = (city, temp, timestamp) => {
+  return `<div id="message-block"><span><p>It is ${temp} in ${city}</p></span>${timestamp}</div>`
+}
+
 io.on('connection', function(socket) {
   io.emit('chatHistoy', history)
   getWeather(weather => {
     weatherApi.push(weather)
-    console.log(weatherApi)
+    const results = weatherApi[0]['query']['results']
+    console.log(results)
   })
 
   socket.on('messageDetails', msg => {
@@ -53,9 +58,7 @@ io.on('connection', function(socket) {
 
     switch (true) {
       case formattedMessage.match(/\btoday\b/) !== null:
-        var botWeatherMsg = `<div id="message-block"><span><p>
-        Hello I'm Eric, I'll make suggestion to what you should wear based on the weather.
-        </p></span>${msgTimeStamp}</div>`
+        var botWeatherMsg = humanizeApi('Toronto', '-7', msgTimeStamp)
         break
       default:
         var botWeatherMsg = `<div id="message-block"><span><p>
