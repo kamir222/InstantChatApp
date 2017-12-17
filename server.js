@@ -1,30 +1,30 @@
-var express = require('express')
-var app = express()
+const express = require('express')
+const app = express()
 
-var http = require('http')
-var server = http.Server(app)
+const http = require('http')
+const server = http.Server(app)
 
 app.use(express.static('client'))
 
-var io = require('socket.io')(server)
-var history = []
-var clientCount = 0
+const io = require('socket.io')(server)
+const history = []
+const clientCount = 0
 
-function getWeather(callback) {
-  var request = require('request')
-  request.get('https://www.metaweather.com/api/location/4118/', function(
-    error,
-    response
-  ) {
-    if (!error && response.statusCode == 200) {
-      var data = JSON.parse(response.body)
-      callback(data)
+const getWeather = callback => {
+  const request = require('request')
+  request.get(
+    `https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22toronto%2C%20ak%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`,
+    (error, response) => {
+      if (!error && response.statusCode == 200) {
+        const data = JSON.parse(response.body)
+        callback(data)
+      }
     }
-  })
+  )
 }
 
-var weatherApi = []
-var daysOfTheWeek = [
+const weatherApi = []
+const daysOfTheWeek = [
   'sunday',
   'monday',
   'tuesday',
@@ -35,19 +35,18 @@ var daysOfTheWeek = [
 
 io.on('connection', function(socket) {
   io.emit('chatHistoy', history)
-  getWeather(function(weather) {
+  getWeather(weather => {
     weatherApi.push(weather)
-    console.log('date:')
-    console.log(weatherApi[0]['consolidated_weather'])
+    console.log(weatherApi)
   })
 
   socket.on('messageDetails', function(msg) {
-    var message = msg.text
-    var user = msg.name
-    var formattedMessage = message.toLowerCase()
-    var msgTimeStamp =
+    const message = msg.text
+    const user = msg.name
+    const formattedMessage = message.toLowerCase()
+    const msgTimeStamp =
       '<span><p>' + new Date().toLocaleTimeString() + '</p></span>'
-    var result =
+    const result =
       '<div id="message-block">' +
       '<span><p>' +
       user +
@@ -55,50 +54,21 @@ io.on('connection', function(socket) {
       '</p></span>' +
       msgTimeStamp +
       '</div>'
-    var listItem = '<li>' + result + '</li>'
+    const listItem = '<li>' + result + '</li>'
 
     history.push(listItem)
     io.emit('messageDetails', listItem)
 
     switch (true) {
-      case formattedMessage.match(/\btoday\b/) !== null:
-        var botWeatherMsg =
-          '<div id="message-block">' +
-          '<span><p> The tempreture in the city of ' +
-          weatherApi[0]['title'] +
-          ' is ' +
-          Math.round(weatherApi[0]['consolidated_weather'][0]['the_temp']) +
-          ' degrees celcius with a state of ' +
-          weatherApi[0]['consolidated_weather'][0]['weather_state_name'] +
-          '</p></span>' +
-          msgTimeStamp +
-          '</div>'
-        break
-      case formattedMessage.match(/\btomorrow\b/) !== null:
-        var botWeatherMsg =
-          '<div id="message-block">' +
-          '<span><p> The tempreture in the city of ' +
-          weatherApi[0]['title'] +
-          ' is ' +
-          Math.round(weatherApi[0]['consolidated_weather'][1]['the_temp']) +
-          ' degrees celcius with a state of ' +
-          weatherApi[0]['consolidated_weather'][1]['weather_state_name'] +
-          '</p></span>' +
-          msgTimeStamp +
-          '</div>'
-        break
       default:
-        var botWeatherMsg =
-          '<div id="message-block">' +
-          '<span><p></p></span>' +
-          "Hello, I'm your friendly weather bot. I know what the weather is in Toronto for the next 7 days." +
-          msgTimeStamp +
-          '</div>'
+        const botWeatherMsg = `<div id="message-block"><span><p>
+        Hello I'm Eric, I'll make suggestion to what you should wear based on the weather.
+        </p></span>${msgTimeStamp}</div>`
     }
 
-    var listItemBotWeather = '<li>' + botWeatherMsg + '</li>'
+    const listItemBotWeather = `<li> ${botWeatherMsg} </li>`
     history.push(listItemBotWeather)
-    setTimeout(function() {
+    setTimeout(() => {
       io.emit('messageDetails', listItemBotWeather)
     }, 1000)
   })
