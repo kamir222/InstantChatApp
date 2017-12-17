@@ -52,8 +52,13 @@ io.on('connection', function(socket) {
     io.emit('messageDetails', listItem)
 
     switch (true) {
+      case formattedMessage.match(/\btoday\b/) !== null:
+        var botWeatherMsg = `<div id="message-block"><span><p>
+        Hello I'm Eric, I'll make suggestion to what you should wear based on the weather.
+        </p></span>${msgTimeStamp}</div>`
+        break
       default:
-        const botWeatherMsg = `<div id="message-block"><span><p>
+        var botWeatherMsg = `<div id="message-block"><span><p>
         Hello I'm Eric, I'll make suggestion to what you should wear based on the weather.
         </p></span>${msgTimeStamp}</div>`
     }
