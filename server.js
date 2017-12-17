@@ -40,21 +40,13 @@ io.on('connection', function(socket) {
     console.log(weatherApi)
   })
 
-  socket.on('messageDetails', function(msg) {
+  socket.on('messageDetails', msg => {
     const message = msg.text
     const user = msg.name
     const formattedMessage = message.toLowerCase()
-    const msgTimeStamp =
-      '<span><p>' + new Date().toLocaleTimeString() + '</p></span>'
-    const result =
-      '<div id="message-block">' +
-      '<span><p>' +
-      user +
-      message +
-      '</p></span>' +
-      msgTimeStamp +
-      '</div>'
-    const listItem = '<li>' + result + '</li>'
+    const msgTimeStamp = `<span><p>${new Date().toLocaleTimeString()}</p></span>`
+    const result = `<div id="message-block"><span><p>${user}${message}</p></span>${msgTimeStamp}</div>`
+    const listItem = `<li>${result}</li>`
 
     history.push(listItem)
     io.emit('messageDetails', listItem)
@@ -74,6 +66,6 @@ io.on('connection', function(socket) {
   })
 })
 
-server.listen(8080, function() {
+server.listen(8080, () => {
   console.log('Chat server running at 8080')
 })
