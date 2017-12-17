@@ -23,12 +23,13 @@ function getWeather(callback) {
  }
 
  var weatherApi = []
- 
+ var daysOfTheWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'saturday']
 
 io.on('connection', function (socket) {
   io.emit('chatHistoy', history);
   getWeather(function(weather) {
     weatherApi.push(weather)
+    console.log('date:')
     console.log(weatherApi[0]['consolidated_weather'])
   })
   
