@@ -216,14 +216,14 @@ io.on('connection', socket => {
     history.push(listItem)
     io.emit('messageDetails', listItem)
 
-    var botWeatherMsg = `<div id="message-block"><span><p>
+    var botNewsMsg = `<div id="message-block"><span><p>
     Hello I'm Eric, tell me what you want to know about in one word and I'll give you 10 of the latest news on that subject.
     </p></span>${msgTimeStamp}</div>`
 
-    const listItemBotWeather = `<li> ${botWeatherMsg} </li>`
-    history.push(listItemBotWeather)
+    const listItemBotNews = `<li> ${botNewsMsg} </li>`
+    history.push(listItemBotNews)
     setTimeout(() => {
-      io.emit('messageDetails', listItemBotWeather)
+      io.emit('messageDetails', listItemBotNews)
     }, 1000)
   })
 })
