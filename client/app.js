@@ -1,17 +1,11 @@
 var socket = io()
 
-window.onload = function() {
+window.onload = () => {
   document.getElementById('chat-form').onsubmit = function(event) {
     event.preventDefault()
-    var user = document.getElementById('initials').value
     var message = document.getElementById('message').value
-    var messageDetails = {
-      name: user,
-      text: message,
-    }
-    socket.emit('messageDetails', messageDetails)
-    document.getElementById('message').value = ''
-    document.getElementById('initials').value = ''
+    socket.emit('messageDetails', message)
+    document.getElementById('message').value = '' 
   }
 
   socket.on('chatHistoy', function(history) {

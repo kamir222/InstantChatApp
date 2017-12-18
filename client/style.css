@@ -19,7 +19,7 @@ main {
 
 header {
   text-align: center;
-  background: #FF8C00;
+  background: rgb(55, 0, 255);
 }
 
 header p {
@@ -50,10 +50,10 @@ form {
 }
 
 button {
-  background-color: #FF8C00;
-  border: 1px solid #FF8C00;
+  background-color: rgb(55, 0, 255);
+  border: 1px solid rgb(55, 0, 255);
   border-radius: 3px;
-  color: darkslategrey;
+  color: white;
   font-size: 13px;
   font-weight: bold;
   padding: 5px 10px;
@@ -78,15 +78,8 @@ input {
   justify-content: center;
 }
 
-#initials {
-  display: none;
-  width: 20%;
-  border-bottom: 1px solid #FF8C00;
-  margin-right: 4px;
-}
-
 #message {
   width: 100%;
-  border-bottom: 1px solid #FF8C00;
+  border-bottom: 1px solid rgb(55, 0, 255);
 }
 
