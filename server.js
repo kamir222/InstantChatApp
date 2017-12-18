@@ -196,7 +196,7 @@ const getNews = () => {
   return API
 }
 
-io.once('connection', socket => {
+io.on('connection', socket => {
   io.emit('chatHistoy', history)
   let newsApi = []
   // getNews(news => {
