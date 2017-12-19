@@ -175,7 +175,7 @@ const getWeather = callback => {
       },
     },
   }
-  const testResults = testWeatherAPI.query.results
+  const testResults = testWeatherAPI.query.results.channel
   console.log(testResults)
   return testResults
 }
@@ -201,8 +201,8 @@ io.on('connection', function(socket) {
   //   console.log(results)
   // })
   const testWeatherAPIResults = getWeather()
-  const city = testWeatherAPIResults.channel.location.city
-  const curentTemp = `${testWeatherAPIResults.channel.item.condition.temp}F`
+  const city = testWeatherAPIResults.location.city
+  const curentTemp = `${testWeatherAPIResults.item.condition.temp}F` //todo: need to convert this to celcius... or I can allow the user to switch it by typing C or F ... 
 
   socket.on('messageDetails', msg => {
     const message = msg.text
