@@ -200,7 +200,9 @@ io.on('connection', function(socket) {
   //   const results = weatherApi[0]['query']['results']
   //   console.log(results)
   // })
-  getWeather()
+  const testWeatherAPIResults = getWeather()
+  const city = testWeatherAPIResults.channel.location.city
+  const curentTemp = `${testWeatherAPIResults.channel.item.condition.temp}F`
 
   socket.on('messageDetails', msg => {
     const message = msg.text
@@ -215,7 +217,7 @@ io.on('connection', function(socket) {
 
     switch (true) {
       case formattedMessage.match(/\btoday\b/) !== null:
-        var botWeatherMsg = humanizeApi('Toronto', '-7', msgTimeStamp)
+        var botWeatherMsg = humanizeApi(city, curentTemp, msgTimeStamp)
         break
       default:
         var botWeatherMsg = `<div id="message-block"><span><p>
