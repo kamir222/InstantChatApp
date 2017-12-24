@@ -23,49 +23,68 @@ const getWeather = callback => {
   )
 }
 
-const weatherApi = []
-const daysOfTheWeek = [
-  'sunday',
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'saturday',
-]
+let weatherApi = {}
+getWeather(weather => {
+  weatherApi = weather
+})
 
-const humanizeApi = (city, temp, timestamp) => {
-  return `<div id="message-block"><span><p>It is ${temp} in ${city}</p></span>${timestamp}</div>`
+const isEmpty =(obj) => {
+  return Object.keys(obj).length === 0;
 }
 
-getWeather(weather => {
-  weatherApi.push(weather)
-})
+const msgTimeStamp = `<span><p>${new Date().toLocaleTimeString()}</p></span>`
 
 io.on('connection', function(socket) {
   io.emit('chatHistoy', history)
-  const results = weatherApi
+  let results = {}
+  let forecast = {}
+  let location = {}
+  let currentConditions = {}
+
+  if (!isEmpty(weatherApi))  {
+    results  = weatherApi['query']['results']['channel']
+    forecast = results['item']['forecast']
+    location = results['location']
+    currentConditions = results['item']['condition']
+  }
+  
   console.log(results)
-  //const location = results['location']
+
+  const conversationSet = {
+    introduction: `<div id="message-block"><span><p>
+    Hello I'm Eric, I'm your friendly weather bot. I know the weather in 
+    ${location.city}, ${location.region} for the next 7 days.
+    </p></span>${msgTimeStamp}</div>`,
+    today: `<div id="message-block"><span><p>
+    Todays forecast is ${currentConditions.temp} and it is ${currentConditions.text}.
+    </p></span>${msgTimeStamp}</div>`
+  }
 
   socket.on('messageDetails', msg => {
     const message = msg.text
     const user = msg.name
-    const formattedMessage = message.toLowerCase()
-    const msgTimeStamp = `<span><p>${new Date().toLocaleTimeString()}</p></span>`
+    const formattedMessage = message.toLowerCase()   
     const result = `<div id="message-block"><span><p>${user}${message}</p></span>${msgTimeStamp}</div>`
     const listItem = `<li>${result}</li>`
 
     history.push(listItem)
     io.emit('messageDetails', listItem)
-
+    
+    let requestedForecast = {}   
     switch (true) {
       case formattedMessage.match(/\btoday\b/) !== null:
-        var botWeatherMsg = humanizeApi(city, curentTemp, msgTimeStamp)
+        var botWeatherMsg = conversationSet.today
+      break
+      case formattedMessage.match(/\bmonday\b/) !== null:
+        forecast.map((elem, index) => {
+          if (elem['day'] === 'Mon') {
+            requestedForecast =  elem
+          } 
+        })
+        var botWeatherMsg = `monday will be a high of ${requestedForcast.high} and a low of ${requestedForcast.low}. It will be ${requestedForcast.text}`
         break
       default:
-        var botWeatherMsg = `<div id="message-block"><span><p>
-        Hello I'm Eric, I'm your friendly weather bot. In , .
-        </p></span>${msgTimeStamp}</div>`
+        var botWeatherMsg = conversationSet.introduction
     }
 
     const listItemBotWeather = `<li> ${botWeatherMsg} </li>`
