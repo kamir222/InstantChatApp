@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
   }
 
   socket.on('messageDetails', msg => {
-    const message = msg.text
+    const message = msg.text.toLowerCase()
     const user = msg.name
     const formattedMessage = message.toLowerCase()
     const result = `<div id="message-block"><span><p>${user}${message}</p></span>${msgTimeStamp}</div>`
@@ -96,6 +96,66 @@ io.on('connection', function(socket) {
           }
         })
         var botWeatherMsg = `tuesday will be a high of ${
+          requestedForecast.high
+        } and a low of ${requestedForecast.low}. It will be ${
+          requestedForecast.text
+        }`
+        break
+      case formattedMessage.match(/\bwednesday\b/) !== null:
+        forecast.map((elem, index) => {
+          if (elem['day'] === 'Wed') {
+            requestedForecast = elem
+          }
+        })
+        var botWeatherMsg = `wednesday will be a high of ${
+          requestedForecast.high
+        } and a low of ${requestedForecast.low}. It will be ${
+          requestedForecast.text
+        }`
+        break
+      case formattedMessage.match(/\bthursday\b/) !== null:
+        forecast.map((elem, index) => {
+          if (elem['day'] === 'Thu') {
+            requestedForecast = elem
+          }
+        })
+        var botWeatherMsg = `thursday will be a high of ${
+          requestedForecast.high
+        } and a low of ${requestedForecast.low}. It will be ${
+          requestedForecast.text
+        }`
+        break
+      case formattedMessage.match(/\bfriday\b/) !== null:
+        forecast.map((elem, index) => {
+          if (elem['day'] === 'Fri') {
+            requestedForecast = elem
+          }
+        })
+        var botWeatherMsg = `friday will be a high of ${
+          requestedForecast.high
+        } and a low of ${requestedForecast.low}. It will be ${
+          requestedForecast.text
+        }`
+        break
+      case formattedMessage.match(/\bsaturday\b/) !== null:
+        forecast.map((elem, index) => {
+          if (elem['day'] === 'Sat') {
+            requestedForecast = elem
+          }
+        })
+        var botWeatherMsg = `saturday will be a high of ${
+          requestedForecast.high
+        } and a low of ${requestedForecast.low}. It will be ${
+          requestedForecast.text
+        }`
+        break
+      case formattedMessage.match(/\bsunday\b/) !== null:
+        forecast.map((elem, index) => {
+          if (elem['day'] === 'Sun') {
+            requestedForecast = elem
+          }
+        })
+        var botWeatherMsg = `sunday will be a high of ${
           requestedForecast.high
         } and a low of ${requestedForecast.low}. It will be ${
           requestedForecast.text
