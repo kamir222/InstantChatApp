@@ -28,8 +28,8 @@ getWeather(weather => {
   weatherApi = weather
 })
 
-const isEmpty =(obj) => {
-  return Object.keys(obj).length === 0;
+const isEmpty = obj => {
+  return Object.keys(obj).length === 0
 }
 
 const msgTimeStamp = `<span><p>${new Date().toLocaleTimeString()}</p></span>`
@@ -41,13 +41,13 @@ io.on('connection', function(socket) {
   let location = {}
   let currentConditions = {}
 
-  if (!isEmpty(weatherApi))  {
-    results  = weatherApi['query']['results']['channel']
+  if (!isEmpty(weatherApi)) {
+    results = weatherApi['query']['results']['channel']
     forecast = results['item']['forecast']
     location = results['location']
     currentConditions = results['item']['condition']
   }
-  
+
   console.log(results)
 
   const conversationSet = {
@@ -56,37 +56,54 @@ io.on('connection', function(socket) {
     ${location.city}, ${location.region} for the next 7 days.
     </p></span>${msgTimeStamp}</div>`,
     today: `<div id="message-block"><span><p>
-    Todays forecast is ${currentConditions.temp} and it is ${currentConditions.text}.
-    </p></span>${msgTimeStamp}</div>`
+    Todays forecast is ${currentConditions.temp} and it is ${
+      currentConditions.text
+    }.
+    </p></span>${msgTimeStamp}</div>`,
   }
 
   socket.on('messageDetails', msg => {
     const message = msg.text
     const user = msg.name
-    const formattedMessage = message.toLowerCase()   
+    const formattedMessage = message.toLowerCase()
     const result = `<div id="message-block"><span><p>${user}${message}</p></span>${msgTimeStamp}</div>`
     const listItem = `<li>${result}</li>`
 
     history.push(listItem)
     io.emit('messageDetails', listItem)
-    
-    let requestedForecast = {}   
+
+    let requestedForecast = {}
     switch (true) {
       case formattedMessage.match(/\btoday\b/) !== null:
         var botWeatherMsg = conversationSet.today
-      break
+        break
       case formattedMessage.match(/\bmonday\b/) !== null:
         forecast.map((elem, index) => {
           if (elem['day'] === 'Mon') {
-            requestedForecast =  elem
-          } 
+            requestedForecast = elem
+          }
         })
-        var botWeatherMsg = `monday will be a high of ${requestedForcast.high} and a low of ${requestedForcast.low}. It will be ${requestedForcast.text}`
+        var botWeatherMsg = `monday will be a high of ${
+          requestedForecast.high
+        } and a low of ${requestedForecast.low}. It will be ${
+          requestedForecast.text
+        }`
+        break
+      case formattedMessage.match(/\btuesday\b/) !== null:
+        forecast.map((elem, index) => {
+          if (elem['day'] === 'Tue') {
+            requestedForecast = elem
+          }
+        })
+        var botWeatherMsg = `tuesday will be a high of ${
+          requestedForecast.high
+        } and a low of ${requestedForecast.low}. It will be ${
+          requestedForecast.text
+        }`
         break
       default:
         var botWeatherMsg = conversationSet.introduction
     }
-
     const listItemBotWeather = `<li> ${botWeatherMsg} </li>`
     history.push(listItemBotWeather)
     setTimeout(() => {
