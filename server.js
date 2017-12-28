@@ -33,7 +33,7 @@ const dayForecastExtractor = (forecast, weekDay) => {
 //   )
 // }
 
-const fahrenheitToCelsiusConverter = (number) => {
+const fahrenheitToCelsiusConverter = number => {
   return number - 32 * 0.5556
 }
 
@@ -191,7 +191,7 @@ const weatherApi = {
         },
       },
     },
-  }
+  },
 }
 const isEmpty = obj => {
   return Object.keys(obj).length === 0
@@ -207,10 +207,10 @@ io.on('connection', function(socket) {
   let currentConditions = {}
 
   //if (!isEmpty(weatherApi)) {
-    results = weatherApi['query']['results']['channel']
-    forecast = results['item']['forecast']
-    location = results['location']
-    currentConditions = results['item']['condition']
+  results = weatherApi['query']['results']['channel']
+  forecast = results['item']['forecast']
+  location = results['location']
+  currentConditions = results['item']['condition']
   //}
 
   console.log(results)
@@ -224,7 +224,9 @@ io.on('connection', function(socket) {
     Todays forecast is ${currentConditions.temp} and it is ${
       currentConditions.text
     }.</p></span>${msgTimeStamp}</div>`,
-    dayOfAWeek: function (day, tempHigh, tempLow) { return `${day} will be a high of ${tempHigh} and a low of ${tempLow}`}
+    dayOfAWeek: function(day, tempHigh, tempLow) {
+      return `${day} will be a high of ${tempHigh} and a low of ${tempLow}`
+    },
   }
 
   socket.on('messageDetails', msg => {
@@ -242,32 +244,60 @@ io.on('connection', function(socket) {
         var botWeatherMsg = conversationSet.today
         break
       case formattedMessage.match(/\bmonday\b/) !== null:
-        let requestedForecast = dayForecastExtractor(forecast, 'Mon')
-        var botWeatherMsg = conversationSet.dayOfAWeek('monday', requestedForecast.high, requestedForecast.low)
+        let mondayForecast = dayForecastExtractor(forecast, 'Mon')
+        var botWeatherMsg = conversationSet.dayOfAWeek(
+          'monday',
+          mondayForecast.high,
+          mondayForecast.low
+        )
         break
       case formattedMessage.match(/\btuesday\b/) !== null:
-        let requestedForecast = dayForecastExtractor(forecast, 'Tue')
-        var botWeatherMsg = conversationSet.dayOfAWeek('tuesday', requestedForecast.high, requestedForecast.low)
+        let tuesdayForecast = dayForecastExtractor(forecast, 'Tue')
+        var botWeatherMsg = conversationSet.dayOfAWeek(
+          'tuesday',
+          tuesdayForecast.high,
+          tuesdayForecast.low
+        )
         break
       case formattedMessage.match(/\bwednesday\b/) !== null:
-      let requestedForecast = dayForecastExtractor(forecast, 'Wed')
-        var botWeatherMsg = conversationSet.dayOfAWeek('wednesday', requestedForecast.high, requestedForecast.low)
+        let wednesdayForecast = dayForecastExtractor(forecast, 'Wed')
+        var botWeatherMsg = conversationSet.dayOfAWeek(
+          'wednesday',
+          wednesdayForecast.high,
+          wednesdayForecast.low
+        )
         break
       case formattedMessage.match(/\bthursday\b/) !== null:
-      let requestedForecast = dayForecastExtractor(forecast, 'Thu')
-        var botWeatherMsg = conversationSet.dayOfAWeek('thursday', requestedForecast.high, requestedForecast.low)
+        let thursdayForecast = dayForecastExtractor(forecast, 'Thu')
+        var botWeatherMsg = conversationSet.dayOfAWeek(
+          'thursday',
+          thursdayForecast.high,
+          thursdayForecast.low
+        )
         break
       case formattedMessage.match(/\bfriday\b/) !== null:
-      let requestedForecast = dayForecastExtractor(forecast, 'Fri')
-        var botWeatherMsg = conversationSet.dayOfAWeek('friday', requestedForecast.high, requestedForecast.low)
+        let fridayForecast = dayForecastExtractor(forecast, 'Fri')
+        var botWeatherMsg = conversationSet.dayOfAWeek(
+          'friday',
+          fridayForecast.high,
+          fridayForecast.low
+        )
         break
       case formattedMessage.match(/\bsaturday\b/) !== null:
-      let requestedForecast = dayForecastExtractor(forecast, 'Sat')
-        var botWeatherMsg = conversationSet.dayOfAWeek('saturday', requestedForecast.high, requestedForecast.low)
+        let saturdayForecast = dayForecastExtractor(forecast, 'Sat')
+        var botWeatherMsg = conversationSet.dayOfAWeek(
+          'saturday',
+          saturdayForecast.high,
+          requestedForecast.low
+        )
         break
       case formattedMessage.match(/\bsunday\b/) !== null:
-        let requestedForecast = dayForecastExtractor(forecast, 'Sun')
-        var botWeatherMsg = conversationSet.dayOfAWeek('sunday', requestedForecast.high, requestedForecast.low)
+        let sundayForecast = dayForecastExtractor(forecast, 'Sun')
+        var botWeatherMsg = conversationSet.dayOfAWeek(
+          'sunday',
+          sundayForecast.high,
+          sundayForecast.low
+        )
         break
       default:
         var botWeatherMsg = conversationSet.introduction
