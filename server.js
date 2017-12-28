@@ -23,6 +23,10 @@ const getWeather = callback => {
   )
 }
 
+const fahrenheitToCelsiusConverter = (number) => {
+  return number - 32 * 0.5556
+}
+
 let weatherApi = {}
 getWeather(weather => {
   weatherApi = weather
