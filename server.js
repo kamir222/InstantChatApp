@@ -49,7 +49,7 @@ const conversationSet = {
 // }
 
 const fahrenheitToCelsiusConverter = number => {
-  return number - 32 * 0.5556
+  return Math.round((number - 32) * 0.5556)
 }
 
 // let weatherApi = {}
@@ -252,8 +252,8 @@ io.on('connection', function(socket) {
         let mondayForecast = dayForecastExtractor(forecast, 'Mon')
         var botWeatherMsg = conversationSet.dayOfAWeek(
           'monday',
-          mondayForecast.high,
-          mondayForecast.low
+          fahrenheitToCelsiusConverter(mondayForecast.high),
+          fahrenheitToCelsiusConverter(mondayForecast.low)
         )
         break
       case formattedMessage.match(/\btuesday\b/) !== null:
