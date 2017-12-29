@@ -20,6 +20,21 @@ const dayForecastExtractor = (forecast, weekDay) => {
   return weekDayForecast
 }
 
+const conversationSet = {
+  introduction: function(city, region, timeStamp) {
+    return `<div id="message-block"><span><p>
+  Hello I'm Eric, I'm your friendly weather bot. I know the weather in 
+  ${city}, ${region} for the next 7 days.
+  </p></span>${timeStamp}</div>`
+  },
+  today: function(tempCurrent, conditionsCurrent, timeStamp) {
+    return `<div id="message-block"><span><p>Todays forecast is ${tempCurrent} and it is ${conditionsCurrent}.</p></span>${timeStamp}</div>`
+  },
+  dayOfAWeek: function(day, tempHigh, tempLow) {
+    return `${day} will be a high of ${tempHigh} and a low of ${tempLow}`
+  },
+}
+
 // const getWeather = callback => {
 //   const request = require('request')
 //   request.get(
@@ -215,20 +230,6 @@ io.on('connection', function(socket) {
 
   console.log(results)
 
-  const conversationSet = {
-    introduction: `<div id="message-block"><span><p>
-    Hello I'm Eric, I'm your friendly weather bot. I know the weather in 
-    ${location.city}, ${location.region} for the next 7 days.
-    </p></span>${msgTimeStamp}</div>`,
-    today: `<div id="message-block"><span><p>
-    Todays forecast is ${currentConditions.temp} and it is ${
-      currentConditions.text
-    }.</p></span>${msgTimeStamp}</div>`,
-    dayOfAWeek: function(day, tempHigh, tempLow) {
-      return `${day} will be a high of ${tempHigh} and a low of ${tempLow}`
-    },
-  }
-
   socket.on('messageDetails', msg => {
     const message = msg.text.toLowerCase()
     const user = msg.name
@@ -241,7 +242,11 @@ io.on('connection', function(socket) {
 
     switch (true) {
       case formattedMessage.match(/\btoday\b/) !== null:
-        var botWeatherMsg = conversationSet.today
+        var botWeatherMsg = conversationSet.today(
+          currentConditions.temp,
+          currentConditions.text,
+          msgTimeStamp
+        )
         break
       case formattedMessage.match(/\bmonday\b/) !== null:
         let mondayForecast = dayForecastExtractor(forecast, 'Mon')
@@ -300,7 +305,11 @@ io.on('connection', function(socket) {
         )
         break
       default:
-        var botWeatherMsg = conversationSet.introduction
+        var botWeatherMsg = conversationSet.introduction(
+          location.city,
+          location.region,
+          msgTimeStamp
+        )
     }
     const listItemBotWeather = `<li> ${botWeatherMsg} </li>`
     history.push(listItemBotWeather)
