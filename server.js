@@ -94,7 +94,7 @@ io.on('connection', function(socket) {
     switch (true) {
       case formattedMessage.match(/\btoday\b/) !== null:
         var botWeatherMsg = conversationSet.today(
-          currentConditions.temp,
+          fahrenheitToCelsiusConverter(currentConditions.temp),
           currentConditions.text,
           msgTimeStamp
         )
