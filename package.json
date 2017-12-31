@@ -5,16 +5,17 @@
    "author": "Katia <katia.amir@gmail.com>",
    "license": "MIT",
    "scripts": {
-    "start": "node server.js",
-    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write './**/*.js'"
+      "start": "node server.js",
+      "format": "prettier --trailing-comma es5 --no-semi --single-quote --write './**/*.js'"
    },
    "dependencies": {
       "express": "^4.16.2",
       "prettier": "^1.9.2",
+      "redis": "^2.8.0",
       "request": "^2.83.0",
       "socket.io": "^2.0.4"
    },
    "devDependencies": {
-    "prettier": "^1.9.2"
-  }
+      "prettier": "^1.9.2"
+   }
 }
