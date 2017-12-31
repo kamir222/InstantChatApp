@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const redis = require('redis')
-const client = redis.createClient() 
+const client = redis.createClient()
 
 client.on('connect', () => {
   console.log('redis connected at hn: 127.0.0.1 port: 6379')
@@ -13,7 +13,7 @@ const server = http.Server(app)
 app.use(express.static('client'))
 
 const io = require('socket.io')(server)
-const history = []
+let history = []
 const clientCount = 0
 
 const dayForecastExtractor = (forecast, weekDay) => {
@@ -71,6 +71,18 @@ const isEmpty = obj => {
 
 const msgTimeStamp = `<span><p>${new Date().toLocaleTimeString()}</p></span>`
 
+const clearAndStoreHistoryInterval = () => {
+  nIntervalId = setInterval(clearAndStoreHistory, 20000)
+}
+
+const clearAndStoreHistory = () => {
+  client.append('history', history.join(''), (err, reply) => {
+    console.log(reply)
+  })
+  history = []
+}
+
+clearAndStoreHistoryInterval()
 io.on('connection', function(socket) {
   io.emit('chatHistoy', history)
   let results = {}
@@ -84,8 +96,6 @@ io.on('connection', function(socket) {
     location = results['location']
     currentConditions = results['item']['condition']
   }
-
-  console.log(results)
 
   socket.on('messageDetails', msg => {
     const message = msg.text.toLowerCase()
