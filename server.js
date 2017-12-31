@@ -1,5 +1,11 @@
 const express = require('express')
 const app = express()
+const redis = require('redis')
+const client = redis.createClient() 
+
+client.on('connect', () => {
+  console.log('redis connected at hn: 127.0.0.1 port: 6379')
+})
 
 const http = require('http')
 const server = http.Server(app)
